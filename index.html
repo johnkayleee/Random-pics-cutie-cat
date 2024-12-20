@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Cat Pictures</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: yellowgreen;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        #image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .image-card {
+            width: 300px;
+            height: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .image-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        .btn:active {
+            background-color: #388e3c;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Random Cat Pictures</h1>
+    <div id="image-container">
+       
+    </div>
+    <button class="btn" onclick="fetchCatPictures()">Get Random Cat Picture</button>
+
+    <script>
+        const apiKey = 'YOUR_API_KEY'; 
+        const apiUrl = 'https://api.thecatapi.com/v1/images/search'; 
+      
+        async function fetchCatPictures() {
+            try {
+                const response = await fetch(apiUrl, {
+                    headers: {
+                        'x-api-key': apiKey 
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch image');
+                }
+
+                const data = await response.json();
+                displayImage(data[0].url);
+            } catch (error) {
+                console.error('Error fetching image:', error);
+                alert('Could not load image. Please try again later.');
+            }
+        }
+
+        
+        function displayImage(imageUrl) {
+            const imageContainer = document.getElementById('image-container');
+            imageContainer.innerHTML = ''; 
+            const imgCard = document.createElement('div');
+            imgCard.classList.add('image-card');
+
+            const img = document.createElement('img');
+            img.src = imageUrl;
+            img.alt = 'Random Cat Image';
+
+            imgCard.appendChild(img);
+            imageContainer.appendChild(imgCard);
+        }
+
+        
+        window.onload = fetchCatPictures;
+    </script>
+
+</body>
+</html>
